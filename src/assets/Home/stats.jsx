@@ -24,43 +24,44 @@ const Counter = ({ target, duration }) => {
 
 const Stats = () => {
   return (
-    <section className="w-full bg-black py-10">
+    <section className="w-full py-20">
       <div className="max-w-7xl mx-auto grid grid-cols-2 md:grid-cols-4 text-center gap-10">
 
         {/* Item 1 */}
         <div>
-          <div className="text-4xl font-semibold text-white mb-2">
+          <div className="text-4xl md:text-5xl font-serif font-bold italic mb-3">
             <Counter target={2} duration={1200} />
           </div>
-          <p className="text-lg text-gray-600">Locations</p>
+          <p className="text-xs uppercase tracking-widest text-zinc-500">Locations</p>
         </div>
 
         {/* Item 2 */}
         <div>
-          <div className="text-4xl font-semibold text-white mb-2">
-            <Counter target={10000} duration={2000} />+
+          <div className="text-4xl md:text-5xl font-serif font-bold italic mb-3">
+            <Counter target={500} duration={2000} />+
           </div>
-          <p className="text-lg text-gray-600">Weddings</p>
+          <p className="text-xs uppercase tracking-widest text-zinc-500">Weddings</p>
         </div>
 
         {/* Item 3 */}
         <div>
-          <div className="text-4xl font-semibold text-white mb-2">
-            <Counter target={200} duration={1500} />+
+          <div className="text-4xl md:text-5xl font-serif font-bold italic mb-3">
+            <Counter target={10} duration={1500} />+
           </div>
-          <p className="text-lg text-gray-600">Employees</p>
+          <p className="text-xs uppercase tracking-widest text-zinc-500">Employees</p>
         </div>
 
         {/* Item 4 */}
         <div>
-          <div className="text-4xl font-semibold text-white mb-2">
+          <div className="text-4xl md:text-5xl font-serif font-bold italic mb-3">
             <Counter target={1} duration={1000} />
           </div>
-          <p className="text-lg text-gray-600">Dream</p>
+          <p className="text-xs uppercase tracking-widest text-zinc-500">Dream</p>
         </div>
 
       </div>
     </section>
+
   );
 };
 
