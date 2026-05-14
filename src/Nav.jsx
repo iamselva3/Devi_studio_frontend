@@ -17,7 +17,17 @@ const Navbar = () => {
 
   return (
     <nav className="w-full relative">
-      <div className="bg-zinc-50/90 dark:bg-zinc-900/80 backdrop-blur-md shadow-[0_8px_30px_rgb(0,0,0,0.04)] dark:shadow-2xl flex items-center justify-between px-6 py-4 rounded-[2.5rem] border border-black/5 dark:border-white/5">
+      <div className="
+        bg-white/40 dark:bg-black/40 
+        backdrop-blur-2xl 
+        shadow-[0_20px_50px_rgba(0,0,0,0.05)] dark:shadow-[0_20px_50px_rgba(0,0,0,0.3)]
+        flex items-center justify-between 
+        px-8 py-5 
+        rounded-[3rem] 
+        border border-white/50 dark:border-white/10
+        transition-all duration-500
+      ">
+
 
 
         

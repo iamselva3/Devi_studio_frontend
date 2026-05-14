@@ -40,7 +40,6 @@ const Testimonials = () => {
             viewport={{ once: true }}
             className="text-zinc-500 tracking-[0.3em] text-[10px] md:text-xs font-bold uppercase mb-4"
           >
-            Kind words from our clients
           </motion.p>
           <motion.h2 
             initial={{ opacity: 0, y: 20 }}
@@ -49,7 +48,7 @@ const Testimonials = () => {
             transition={{ delay: 0.1 }}
             className="text-4xl md:text-5xl font-serif font-bold italic"
           >
-            Testimonials
+           Stories Through Their Eyes
           </motion.h2>
         </div>
 

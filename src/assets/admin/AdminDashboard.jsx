@@ -24,13 +24,17 @@ const AdminDashboard = () => {
   const [currentImages, setCurrentImages] = useState([]);
 
   // Testimonial State
+  const [testimonials, setTestimonials] = useState([]);
   const [testimonialName, setTestimonialName] = useState("");
   const [testimonialContent, setTestimonialContent] = useState("");
   const [testimonialImage, setTestimonialImage] = useState(null);
+  const [editingTestimonial, setEditingTestimonial] = useState(null);
 
   useEffect(() => {
     fetchClients();
+    fetchTestimonials();
   }, []);
+
 
   useEffect(() => {
     if (selectedClient && selectedClient !== "new") {
@@ -117,34 +121,84 @@ const AdminDashboard = () => {
     }
   };
 
+  const fetchTestimonials = async () => {
+    try {
+      const res = await axios.get(`${import.meta.env.VITE_API_URL}/test/testimonial`);
+      setTestimonials(res.data);
+    } catch (err) {
+      console.error("Error fetching testimonials", err);
+    }
+  };
+
   const handleTestimonialUpload = async (e) => {
     e.preventDefault();
     setLoading(true);
     setMessage("");
 
-    if (!selectedClient || selectedClient === "new") return alert("Please select an existing client for the testimonial");
-    
-    const clientObj = clients.find(c => c.clientName === selectedClient);
-    if (!clientObj) return alert("Client not found");
-
     const formData = new FormData();
-    formData.append("clientId", clientObj._id);
-    formData.append("name", testimonialName);
-    formData.append("content", testimonialContent);
-    formData.append("image", testimonialImage);
+    if (editingTestimonial) {
+      // Update logic
+      formData.append("name", testimonialName);
+      formData.append("content", testimonialContent);
+      if (testimonialImage) formData.append("image", testimonialImage);
 
-    try {
-      await axios.post(`${import.meta.env.VITE_API_URL}/test/testimonial`, formData, authHeader);
-      setMessage("Testimonial added successfully!");
+      try {
+        await axios.put(`${import.meta.env.VITE_API_URL}/test/testimonial/${editingTestimonial._id}`, formData, authHeader);
+        setMessage("Testimonial updated successfully!");
+        setEditingTestimonial(null);
+        setTestimonialName("");
+        setTestimonialContent("");
+        setTestimonialImage(null);
+        fetchTestimonials();
+      } catch (err) {
+        setMessage("Update failed: " + (err.response?.data?.message || err.message));
+      } finally {
+        setLoading(false);
+      }
+    } else {
+      // Create logic
+      if (!selectedClient || selectedClient === "new") return alert("Please select an existing client for the testimonial");
+      
+      const clientObj = clients.find(c => c.clientName === selectedClient);
+      if (!clientObj) return alert("Client not found");
 
-      setTestimonialName("");
-      setTestimonialContent("");
-      setTestimonialImage(null);
-    } catch (err) {
-      setMessage("Upload failed: " + (err.response?.data?.message || err.message));
-    } finally {
-      setLoading(false);
+      formData.append("clientId", clientObj._id);
+      formData.append("name", testimonialName);
+      formData.append("content", testimonialContent);
+      formData.append("image", testimonialImage);
+
+      try {
+        await axios.post(`${import.meta.env.VITE_API_URL}/test/testimonial`, formData, authHeader);
+        setMessage("Testimonial added successfully!");
+        setTestimonialName("");
+        setTestimonialContent("");
+        setTestimonialImage(null);
+        fetchTestimonials();
+      } catch (err) {
+        setMessage("Upload failed: " + (err.response?.data?.message || err.message));
+      } finally {
+        setLoading(false);
+      }
     }
+  };
+
+  const handleDeleteTestimonial = async (id) => {
+    if (!window.confirm("Are you sure you want to delete this testimonial?")) return;
+    try {
+      await axios.delete(`${import.meta.env.VITE_API_URL}/test/testimonial/${id}`, authHeader);
+      setMessage("Testimonial deleted successfully");
+      fetchTestimonials();
+    } catch (err) {
+      setMessage("Delete failed: " + (err.response?.data?.message || err.message));
+    }
+  };
+
+  const handleEditTestimonial = (test) => {
+    setEditingTestimonial(test);
+    setTestimonialName(test.name);
+    setTestimonialContent(test.content);
+    // Note: image is handled separately via file input
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
 
@@ -367,20 +421,27 @@ const AdminDashboard = () => {
                         className="bg-zinc-900/30 p-10 rounded-[2.5rem] border border-zinc-800 h-full"
                     >
                         <form onSubmit={handleTestimonialUpload} className="space-y-8">
-                        <div>
-                            <label className="block text-xs uppercase tracking-[0.2em] text-zinc-500 mb-3 ml-1">Client Association</label>
-                            <select 
-                            className="w-full bg-zinc-900 border border-zinc-800 p-4 rounded-2xl focus:outline-none focus:border-white transition-all appearance-none cursor-pointer"
-                            value={selectedClient}
-                            onChange={(e) => setSelectedClient(e.target.value)}
-                            required
-                            >
-                            <option value="">Choose a client...</option>
-                            {clients.filter(c => c.clientName !== "SYSTEM").map(client => (
-                                <option key={client._id} value={client.clientName}>{client.clientName}</option>
-                            ))}
-                            </select>
-                        </div>
+                        {editingTestimonial ? (
+                          <div className="flex items-center justify-between bg-zinc-800 p-4 rounded-2xl mb-4 border border-white/5">
+                            <span className="text-xs font-bold uppercase text-zinc-400 tracking-widest">Editing mode</span>
+                            <button onClick={() => { setEditingTestimonial(null); setTestimonialName(""); setTestimonialContent(""); setTestimonialImage(null); }} className="text-[10px] uppercase tracking-widest text-white/50 hover:text-white">Cancel</button>
+                          </div>
+                        ) : (
+                          <div>
+                              <label className="block text-xs uppercase tracking-[0.2em] text-zinc-500 mb-3 ml-1">Client Association</label>
+                              <select 
+                              className="w-full bg-zinc-900 border border-zinc-800 p-4 rounded-2xl focus:outline-none focus:border-white transition-all appearance-none cursor-pointer"
+                              value={selectedClient}
+                              onChange={(e) => setSelectedClient(e.target.value)}
+                              required
+                              >
+                              <option value="">Choose a client...</option>
+                              {clients.filter(c => c.clientName !== "SYSTEM").map(client => (
+                                  <option key={client._id} value={client.clientName}>{client.clientName}</option>
+                              ))}
+                              </select>
+                          </div>
+                        )}
 
                         <div>
                             <label className="block text-xs uppercase tracking-[0.2em] text-zinc-500 mb-3 ml-1">Reviewer Name</label>
@@ -407,13 +468,13 @@ const AdminDashboard = () => {
                         </div>
 
                         <div>
-                            <label className="block text-xs uppercase tracking-[0.2em] text-zinc-500 mb-3 ml-1">Avatar Image</label>
+                            <label className="block text-xs uppercase tracking-[0.2em] text-zinc-500 mb-3 ml-1">Avatar Image {editingTestimonial && "(Optional)"}</label>
                             <input 
                             type="file"
                             accept="image/*"
                             className="w-full bg-zinc-900 border border-zinc-800 p-4 rounded-2xl file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-bold file:bg-white file:text-black hover:file:bg-zinc-200 cursor-pointer"
                             onChange={(e) => setTestimonialImage(e.target.files[0])}
-                            required
+                            required={!editingTestimonial}
                             />
                         </div>
 
@@ -422,9 +483,10 @@ const AdminDashboard = () => {
                             disabled={loading}
                             className="w-full bg-white text-black font-bold py-5 rounded-2xl hover:bg-zinc-200 transition-all duration-300 disabled:opacity-50 text-sm uppercase tracking-widest"
                         >
-                            {loading ? "Processing..." : "Publish Testimonial"}
+                            {loading ? "Processing..." : editingTestimonial ? "Update Testimonial" : "Publish Testimonial"}
                         </button>
                         </form>
+
                     </motion.div>
                     )}
                 </div>
@@ -432,15 +494,40 @@ const AdminDashboard = () => {
                 {/* View/Delete Column */}
                 <div className="bg-zinc-900/10 p-10 rounded-[2.5rem] border border-zinc-900 flex flex-col h-[700px]">
                     <div className="flex items-center justify-between mb-8">
-                        <h2 className="text-xl font-serif font-bold tracking-tight">ACTIVE ASSETS</h2>
-                        {selectedClient && selectedClient !== "new" && (
+                        <h2 className="text-xl font-serif font-bold tracking-tight uppercase">
+                            {activeTab === "testimonials" ? "Existing Testimonials" : "Active Assets"}
+                        </h2>
+                        {activeTab === "gallery" && selectedClient && selectedClient !== "new" && (
                             <span className="bg-white/5 text-zinc-500 px-4 py-1 rounded-full text-[10px] uppercase tracking-widest border border-white/10">
                                 {selectedClient}
                             </span>
                         )}
                     </div>
 
-                    {selectedClient && selectedClient !== "new" ? (
+                    {activeTab === "testimonials" ? (
+                        <div className="space-y-4 overflow-y-auto pr-4 custom-scrollbar flex-grow">
+                            {testimonials.map((test) => (
+                                <div key={test._id} className="bg-zinc-900/50 p-6 rounded-2xl border border-zinc-800 flex items-start gap-4 group">
+                                    <img src={test.image.url} alt="" className="w-16 h-16 rounded-full object-cover border border-white/10" />
+                                    <div className="flex-grow">
+                                        <div className="flex items-center justify-between mb-1">
+                                            <h3 className="font-bold text-white">{test.name}</h3>
+                                            <div className="flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                                                <button onClick={() => handleEditTestimonial(test)} className="text-zinc-500 hover:text-white transition">✎</button>
+                                                <button onClick={() => handleDeleteTestimonial(test._id)} className="text-zinc-500 hover:text-red-500 transition">✕</button>
+                                            </div>
+                                        </div>
+                                        <p className="text-zinc-400 text-xs line-clamp-2 italic">"{test.content}"</p>
+                                    </div>
+                                </div>
+                            ))}
+                            {testimonials.length === 0 && (
+                                <div className="flex flex-col items-center justify-center h-full text-zinc-600 italic">
+                                    No testimonials found.
+                                </div>
+                            )}
+                        </div>
+                    ) : selectedClient && selectedClient !== "new" ? (
                         <div className="grid grid-cols-2 gap-4 overflow-y-auto pr-4 custom-scrollbar flex-grow">
                             {currentImages.map((img, idx) => (
                                 <div key={idx} className="relative group rounded-3xl overflow-hidden aspect-square border border-white/5 shadow-xl">
@@ -456,14 +543,6 @@ const AdminDashboard = () => {
                                     </div>
                                 </div>
                             ))}
-                            {currentImages.length === 0 && (
-                                <div className="col-span-2 flex flex-col items-center justify-center h-full text-zinc-600 italic">
-                                    <svg className="w-12 h-12 mb-4 opacity-20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
-                                    </svg>
-                                    No assets found.
-                                </div>
-                            )}
                         </div>
                     ) : (
                         <div className="flex flex-col items-center justify-center flex-grow text-zinc-600 italic text-center p-10">
@@ -474,6 +553,7 @@ const AdminDashboard = () => {
                         </div>
                     )}
                 </div>
+
             </div>
         )}
       </div>
