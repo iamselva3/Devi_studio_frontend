@@ -90,7 +90,7 @@ const LayoutManager = () => {
       <div className="max-w-6xl mx-auto">
         <div className="flex items-center justify-between mb-12 border-b border-zinc-900 pb-6">
           <h1 className="text-4xl md:text-5xl font-serif font-bold tracking-tight">LAYOUT & BANNERS</h1>
-          <a href="/admin/dashboard" className="text-zinc-500 hover:text-white transition text-xs uppercase tracking-widest">Back to Dashboard</a>
+          <a href="/admin" className="text-zinc-500 hover:text-white transition text-xs uppercase tracking-widest">Back to Dashboard</a>
         </div>
 
         {message && (
