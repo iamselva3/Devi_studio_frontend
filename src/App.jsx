@@ -16,7 +16,7 @@ function App() {
     <ThemeProvider>
       <div className="min-h-screen flex flex-col">
         {!isAdminPath && (
-          <header className="sticky top-4 z-50 px-4 md:px-6 max-w-7xl mx-auto w-full">
+          <header className="sticky top-4 z-50 px-[1px] md:px-6 max-w-7xl mx-auto w-full">
             <Navbar />
           </header>
         )}

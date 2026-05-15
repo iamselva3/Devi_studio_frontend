@@ -240,6 +240,12 @@ const AdminDashboard = () => {
           >
             Testimonials
           </button>
+          <a 
+            href="/admin/layout"
+            className="px-8 py-3 rounded-full font-medium bg-zinc-900 text-zinc-400 hover:bg-zinc-800 transition-all duration-300 border border-white/5"
+          >
+            Layout & Banners →
+          </a>
         </div>
 
         {message && (

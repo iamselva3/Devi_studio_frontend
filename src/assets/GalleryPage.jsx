@@ -10,6 +10,7 @@ const GalleryPage = ({ title, category, bannerCategory }) => {
   const [banners, setBanners] = useState([]);
   const [images, setImages] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [bannerHeight, setBannerHeight] = useState(400); // Default mobile height
 
   useEffect(() => {
     const fetchData = async () => {
@@ -19,6 +20,14 @@ const GalleryPage = ({ title, category, bannerCategory }) => {
         setBanners(bannerRes.data.data);
         const imageRes = await axios.get(`${import.meta.env.VITE_API_URL}/api/images/category/${category}`);
         setImages(imageRes.data.data);
+
+        // Fetch Banner Height Setting
+        const settingsRes = await axios.get(`${import.meta.env.VITE_API_URL}/api/settings/layout_config`);
+        if (settingsRes.data && settingsRes.data.value && settingsRes.data.value.bannerHeights) {
+            const pageKey = category.split('_').pop(); // e.g. "banner_wedding" -> "wedding"
+            const height = settingsRes.data.value.bannerHeights[category] || settingsRes.data.value.bannerHeights[pageKey] || 400;
+            setBannerHeight(height);
+        }
       } catch (err) {
         console.error(`Error fetching data for ${title}`, err);
       } finally {
@@ -31,8 +40,11 @@ const GalleryPage = ({ title, category, bannerCategory }) => {
   return (
     <div className="min-h-screen">
       {/* BANNER SECTION */}
-      <section className="relative w-full max-w-7xl mx-auto px-4 md:px-6 mt-4">
-        <div className="relative w-full h-[400px] md:h-[550px] overflow-hidden rounded-[2.5rem] shadow-2xl">
+      <section className="relative w-full max-w-7xl mx-auto px-[1px] md:px-6 mt-4">
+        <div 
+          className="relative w-full overflow-hidden rounded-[2.5rem] shadow-2xl transition-all duration-700"
+          style={{ height: `${bannerHeight}px` }}
+        >
         {loading ? (
           <div className="w-full h-full bg-zinc-900/10 dark:bg-zinc-900/50 animate-pulse flex items-center justify-center">
              <span className="text-zinc-400 font-serif italic text-lg tracking-widest uppercase">Loading...</span>
@@ -89,11 +101,11 @@ const GalleryPage = ({ title, category, bannerCategory }) => {
       </section>
 
       {/* GALLERY SECTION */}
-      <section className="max-w-7xl mx-auto px-4 py-20 md:py-32">
+      <section className="max-w-7xl mx-auto px-[1px] py-12 md:py-32">
         <div className="mb-16 flex items-center justify-between">
             <h2 className="text-2xl md:text-3xl font-serif italic dark:text-zinc-300">The Gallery</h2>
             <div className="h-[1px] flex-grow bg-black/5 dark:bg-white/5 mx-8"></div>
-            <span className="text-zinc-500 dark:text-zinc-600 text-[10px] uppercase tracking-widest">{images.length} Assets</span>
+            <span className="text-zinc-500 dark:text-zinc-600 text-[10px] uppercase tracking-widest hidden sm:block">{images.length} Assets</span>
         </div>
         
         {loading ? (
@@ -103,7 +115,7 @@ const GalleryPage = ({ title, category, bannerCategory }) => {
                 ))}
             </div>
         ) : images.length > 0 ? (
-            <div className="columns-1 sm:columns-2 lg:columns-3 gap-6 space-y-6">
+            <div className="columns-2 sm:columns-2 lg:columns-3 gap-3 md:gap-6 space-y-3 md:space-y-6">
                 {images.map((img, index) => (
                     <motion.div 
                         key={index} 
@@ -111,10 +123,11 @@ const GalleryPage = ({ title, category, bannerCategory }) => {
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
                         transition={{ delay: index * 0.05 }}
-                        className="group relative overflow-hidden rounded-[2.5rem] bg-zinc-900/5 border border-black/5 dark:border-white/5"
+                        className="group relative overflow-hidden rounded-2xl md:rounded-[2.5rem] bg-zinc-900/5 border border-black/5 dark:border-white/5"
                     >
                         <img 
-                            src={img.url} 
+                            // src={encodeUrl(img.url)} 
+                            src={img.url}
                             alt={`${title} ${index}`} 
                             className="w-full h-auto transition-transform duration-1000 group-hover:scale-110"
                         />

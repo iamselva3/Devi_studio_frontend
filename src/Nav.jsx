@@ -22,8 +22,8 @@ const Navbar = () => {
         backdrop-blur-2xl 
         shadow-[0_20px_50px_rgba(0,0,0,0.05)] dark:shadow-[0_20px_50px_rgba(0,0,0,0.3)]
         flex items-center justify-between 
-        px-8 py-5 
-        rounded-[3rem] 
+        px-1 md:px-8 py-3 md:py-5 
+        rounded-2xl md:rounded-[3rem] 
         border border-white/50 dark:border-white/10
         transition-all duration-500
       ">

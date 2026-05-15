@@ -6,6 +6,7 @@ import { motion } from "framer-motion";
 const ClientCards = () => {
   const [clients, setClients] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [alignment, setAlignment] = useState("md:grid-cols-2 lg:grid-cols-3");
 
   useEffect(() => {
     const fetchClients = async () => {
@@ -13,6 +14,12 @@ const ClientCards = () => {
         const res = await axios.get(`${import.meta.env.VITE_API_URL}/api/clients`);
         // Filter out SYSTEM content for the portfolio cards
         setClients(res.data.data.filter(c => c.clientName !== "SYSTEM"));
+
+        // Fetch Alignment Setting
+        const settingsRes = await axios.get(`${import.meta.env.VITE_API_URL}/api/settings/layout_config`);
+        if (settingsRes.data && settingsRes.data.value && settingsRes.data.value.cardAlignment) {
+            setAlignment(settingsRes.data.value.cardAlignment);
+        }
       } catch (err) {
         console.error("Error fetching clients", err);
       } finally {
@@ -31,7 +38,7 @@ const ClientCards = () => {
   if (clients.length === 0) return null;
 
   return (
-    <section className="py-24 px-6">
+    <section className="py-24 px-[1px]">
       <div className="max-w-7xl mx-auto">
         <div className="mb-16 flex flex-col md:flex-row md:items-end justify-between gap-6">
           <div>
@@ -42,7 +49,7 @@ const ClientCards = () => {
         </div>
 
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-12">
+        <div className={`grid grid-cols-1 gap-8 md:gap-12 ${alignment}`}>
           {clients.map((client, index) => {
             // Find a featured image (prefer 'cards' category, or just use the first image)
             const featuredImage = client.images.find(img => img.category === "cards") || client.images[0];

@@ -11,7 +11,7 @@ const Home = () => {
   return (
     <div>
         
-      <section className="w-full max-w-7xl mx-auto px-6 py-12 md:py-24">
+      <section className="w-full max-w-7xl mx-auto px-[1px] md:px-6 py-12 md:py-24">
         {/* Top title */}
         <p className="text-zinc-500 dark:text-zinc-400 tracking-[0.3em] text-[10px] md:text-xs mb-4 uppercase">
           Hello, we are glad you found us!
@@ -27,7 +27,7 @@ const Home = () => {
         <HeroShowcase />
       </div>
 
-      <section className="w-full max-w-7xl mx-auto text-center px-6 py-20 md:py-32">
+      <section className="w-full max-w-7xl mx-auto text-center px-[1px] py-20 md:py-32">
         <h2 className="text-3xl md:text-5xl font-serif font-semibold leading-tight mb-10">
           Transforming genuine <br className="hidden sm:block" /> 
           happiness into <span className="italic font-light">eternal imagery!</span>

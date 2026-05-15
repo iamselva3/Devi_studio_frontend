@@ -12,12 +12,19 @@ import { motion } from "framer-motion";
 const HeroShowcase = () => {
   const [banners, setBanners] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [bannerHeight, setBannerHeight] = useState(450);
 
   useEffect(() => {
     const fetchBanners = async () => {
       try {
         const res = await axios.get(`${import.meta.env.VITE_API_URL}/api/images/category/banners`);
         setBanners(res.data.data);
+
+        // Fetch Banner Height Setting
+        const settingsRes = await axios.get(`${import.meta.env.VITE_API_URL}/api/settings/layout_config`);
+        if (settingsRes.data && settingsRes.data.value && settingsRes.data.value.bannerHeights) {
+            setBannerHeight(settingsRes.data.value.bannerHeights.home || 450);
+        }
       } catch (err) {
         console.error("Error fetching banners", err);
       } finally {
@@ -28,8 +35,11 @@ const HeroShowcase = () => {
   }, []);
 
   return (
-    <section className="relative w-full max-w-7xl mx-auto px-4 md:px-6 mt-4">
-      <div className="relative rounded-[2rem] shadow-2xl overflow-hidden h-[450px] md:h-[600px]">
+    <section className="relative w-full max-w-7xl mx-auto px-[1px] md:px-6 mt-4">
+      <div 
+        className="relative rounded-[2rem] shadow-2xl overflow-hidden transition-all duration-700"
+        style={{ height: `${bannerHeight}px` }}
+      >
         {loading ? (
           <div className="w-full h-full bg-zinc-400/10 dark:bg-zinc-900/50 animate-pulse flex items-center justify-center">
             <span className="text-zinc-400 font-serif italic text-xl tracking-[0.3em]">DEVI STUDIO</span>

@@ -9,8 +9,8 @@ const Footer = () => {
     >
 
       {/* BOOK US NOW SECTION */}
-      <div className="max-w-7xl mx-auto px-4 md:px-6">
-        <div className="bg-white dark:bg-zinc-900/20 text-[var(--text-color)] p-12 md:p-24 relative overflow-hidden rounded-[4rem] shadow-[0_32px_64px_-15px_rgba(0,0,0,0.05)] dark:shadow-none border border-black/[0.03] dark:border-white/[0.03]">
+      <div className="max-w-7xl mx-auto px-[1px] md:px-6">
+        <div className="bg-white dark:bg-zinc-900/20 text-[var(--text-color)] p-8 md:p-24 relative overflow-hidden rounded-3xl md:rounded-[4rem] shadow-[0_32px_64px_-15px_rgba(0,0,0,0.05)] dark:shadow-none border border-black/[0.03] dark:border-white/[0.03]">
           <div className="flex flex-col lg:flex-row items-center justify-between gap-16 relative z-10">
             <div className="text-center lg:text-left">
               <h2 className="text-5xl md:text-8xl font-serif font-bold italic mb-8 tracking-tighter leading-[0.9]">
@@ -45,7 +45,7 @@ const Footer = () => {
         
         {/* WEDDINGS */}
         <div className="space-y-10">
-          <h3 className="text-zinc-900 dark:text-white text-[11px] font-bold uppercase tracking-[0.5em] opacity-40">Services</h3>
+          <h3 className="text-zinc-500 dark:text-white/40 text-[11px] font-bold uppercase tracking-[0.5em]">Services</h3>
           <ul className="space-y-5 text-sm text-zinc-500 dark:text-zinc-400 font-light">
             <li className="hover:text-zinc-900 dark:hover:text-white transition-colors cursor-pointer">Wedding Cinema</li>
             <li className="hover:text-zinc-900 dark:hover:text-white transition-colors cursor-pointer">Bridal Portraits</li>
@@ -55,7 +55,7 @@ const Footer = () => {
 
         {/* EXPLORE */}
         <div className="space-y-10">
-          <h3 className="text-zinc-900 dark:text-white text-[11px] font-bold uppercase tracking-[0.5em] opacity-40">Explore</h3>
+          <h3 className="text-zinc-500 dark:text-white/40 text-[11px] font-bold uppercase tracking-[0.5em]">Explore</h3>
           <ul className="space-y-5 text-sm text-zinc-500 dark:text-zinc-400 font-light">
             <li className="hover:text-zinc-900 dark:hover:text-white transition-colors cursor-pointer">Portfolio</li>
             <li className="hover:text-zinc-900 dark:hover:text-white transition-colors cursor-pointer">Our Story</li>
@@ -65,7 +65,7 @@ const Footer = () => {
 
         {/* SOCIAL */}
         <div className="space-y-10">
-          <h3 className="text-zinc-900 dark:text-white text-[11px] font-bold uppercase tracking-[0.5em] opacity-40">Connect</h3>
+          <h3 className="text-zinc-500 dark:text-white/40 text-[11px] font-bold uppercase tracking-[0.5em]">Connect</h3>
           <ul className="space-y-5 text-sm text-zinc-500 dark:text-zinc-400 font-light">
             <li className="hover:text-zinc-900 dark:hover:text-white transition-colors cursor-pointer">Instagram</li>
             <li className="hover:text-zinc-900 dark:hover:text-white transition-colors cursor-pointer">Facebook</li>
@@ -75,7 +75,7 @@ const Footer = () => {
 
         {/* LOCATIONS */}
         <div className="space-y-10">
-          <h3 className="text-zinc-900 dark:text-white text-[11px] font-bold uppercase tracking-[0.5em] opacity-40">Studio</h3>
+          <h3 className="text-zinc-500 dark:text-white/40 text-[11px] font-bold uppercase tracking-[0.5em]">Studio</h3>
           <div className="text-sm text-zinc-500 dark:text-zinc-400 leading-relaxed font-light">
             <p className="font-serif italic text-xl text-zinc-900 dark:text-white mb-4 tracking-tight">Vellore, Tamil Nadu</p>
             <p className="opacity-80">No 61, Vellore–Katpadi main road,<br />Vellore, 632007.</p>

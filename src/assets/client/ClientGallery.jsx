@@ -139,7 +139,7 @@ const ClientGallery = () => {
               initial={{ scale: 0.8 }}
               animate={{ scale: 1 }}
               exit={{ scale: 0.8 }}
-              src={selectedImage}
+              src={selectedImage} 
               className="max-w-full max-h-[90vh] object-contain shadow-2xl"
             />
             <button 

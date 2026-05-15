@@ -92,7 +92,7 @@ const Contact = () => {
           <form onSubmit={handleSubmit} className="space-y-6">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
-                <label className="block text-[10px] uppercase tracking-widest text-zinc-400 mb-3 ml-1 font-bold">Your Name</label>
+                <label className="block text-[10px] uppercase tracking-widest text-zinc-500 mb-3 ml-1 font-bold">Your Name</label>
                 <input 
                   type="text" 
                   name="name"
@@ -104,7 +104,7 @@ const Contact = () => {
                 />
               </div>
               <div>
-                <label className="block text-[10px] uppercase tracking-widest text-zinc-400 mb-3 ml-1 font-bold">Email Address</label>
+                <label className="block text-[10px] uppercase tracking-widest text-zinc-500 mb-3 ml-1 font-bold">Email Address</label>
                 <input 
                   type="email" 
                   name="email"
@@ -119,7 +119,7 @@ const Contact = () => {
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
-                <label className="block text-[10px] uppercase tracking-widest text-zinc-400 mb-3 ml-1 font-bold">Phone Number</label>
+                <label className="block text-[10px] uppercase tracking-widest text-zinc-500 mb-3 ml-1 font-bold">Phone Number</label>
                 <input 
                   type="tel" 
                   name="phone"
@@ -131,7 +131,7 @@ const Contact = () => {
                 />
               </div>
               <div>
-                <label className="block text-[10px] uppercase tracking-widest text-zinc-400 mb-3 ml-1 font-bold">Event Date</label>
+                <label className="block text-[10px] uppercase tracking-widest text-zinc-500 mb-3 ml-1 font-bold">Event Date</label>
                 <input 
                   type="date" 
                   name="date"
@@ -143,7 +143,7 @@ const Contact = () => {
             </div>
 
             <div>
-              <label className="block text-[10px] uppercase tracking-widest text-zinc-400 mb-3 ml-1 font-bold">Booking Details</label>
+              <label className="block text-[10px] uppercase tracking-widest text-zinc-500 mb-3 ml-1 font-bold">Booking Details</label>
               <textarea 
                 rows="5"
                 name="message"
