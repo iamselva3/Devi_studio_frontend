@@ -56,7 +56,7 @@ const Contact = () => {
               </div>
               <div>
                 <h3 className="text-xs font-bold uppercase tracking-widest text-zinc-400 mb-2">Location</h3>
-                <p className="font-serif italic text-xl">Vellore, Tamil Nadu</p>
+                <p className="font-serif italic text-xl">Chennai | Tuticorin</p>
               </div>
             </div>
 
@@ -66,7 +66,7 @@ const Contact = () => {
               </div>
               <div>
                 <h3 className="text-xs font-bold uppercase tracking-widest text-zinc-400 mb-2">Call Us</h3>
-                <p className="font-serif italic text-xl">+91 9840767566</p>
+                <p className="font-serif italic text-xl">+91 9443961216</p>
               </div>
             </div>
 

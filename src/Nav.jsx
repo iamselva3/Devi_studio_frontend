@@ -79,7 +79,7 @@ const Navbar = () => {
 
           {/* Desktop Call/Book */}
           <div className="hidden sm:flex items-center gap-3">
-            <a href="tel:9840767566" className="bg-black dark:bg-white text-white dark:text-black px-5 py-2 text-[10px] font-bold rounded-full tracking-widest hover:scale-105 transition">CALL</a>
+            <a href="tel:9443961216" className="bg-black dark:bg-white text-white dark:text-black px-5 py-2 text-[10px] font-bold rounded-full tracking-widest hover:scale-105 transition">CALL</a>
             <a href="/contact-us" className="bg-black dark:bg-white text-white dark:text-black px-5 py-2 text-[10px] font-bold rounded-full tracking-widest hover:scale-105 transition">BOOK</a>
           </div>
 
@@ -114,7 +114,7 @@ const Navbar = () => {
               ))}
               <hr className="border-black/5 dark:border-white/5" />
               <li className="pt-2 flex flex-col gap-4">
-                <a href="tel:9840767566" className="bg-black dark:bg-white text-white dark:text-black py-4 rounded-2xl font-bold">CALL 9840767566</a>
+                <a href="tel:9443961216" className="bg-black dark:bg-white text-white dark:text-black py-4 rounded-2xl font-bold">CALL 9443961216</a>
                 <a href="/contact-us" className="bg-black dark:bg-white text-white dark:text-black py-4 rounded-2xl font-bold">BOOK US NOW</a>
               </li>
             </ul>

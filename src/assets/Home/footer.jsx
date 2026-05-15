@@ -24,8 +24,8 @@ const Footer = () => {
             <div className="flex flex-col items-center lg:items-end gap-10">
                <div className="space-y-2 text-center lg:text-right">
                  <span className="text-zinc-300 dark:text-zinc-700 text-[10px] uppercase tracking-[0.5em] font-bold block">Quick Contact</span>
-                 <a href="tel:9840767566" className="text-2xl md:text-4xl font-serif font-bold italic hover:text-zinc-400 transition-colors duration-500 block">
-                   +91 9840767566
+                 <a href="tel:9443961216" className="text-2xl md:text-4xl font-serif font-bold italic hover:text-zinc-400 transition-colors duration-500 block">
+                   +91 9443961216
                  </a>
                </div>
                <a href="/contact-us" className="group relative bg-black dark:bg-white text-white dark:text-black px-12 py-5 rounded-full text-[11px] font-bold tracking-[0.3em] uppercase overflow-hidden transition-all duration-500 hover:pr-16">
@@ -77,8 +77,7 @@ const Footer = () => {
         <div className="space-y-10">
           <h3 className="text-zinc-500 dark:text-white/40 text-[11px] font-bold uppercase tracking-[0.5em]">Studio</h3>
           <div className="text-sm text-zinc-500 dark:text-zinc-400 leading-relaxed font-light">
-            <p className="font-serif italic text-xl text-zinc-900 dark:text-white mb-4 tracking-tight">Vellore, Tamil Nadu</p>
-            <p className="opacity-80">No 61, Vellore–Katpadi main road,<br />Vellore, 632007.</p>
+            <p className="font-serif italic text-xl text-zinc-900 dark:text-white mb-4 tracking-tight">Chennai | Tuticorin</p>
           </div>
         </div>
 

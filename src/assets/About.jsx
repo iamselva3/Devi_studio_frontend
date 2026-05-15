@@ -132,7 +132,7 @@ const About = () => {
           
           <div className="max-w-4xl mx-auto text-center space-y-10">
             <p className="text-2xl md:text-3xl font-light leading-relaxed text-zinc-500 dark:text-zinc-400 italic">
-              Join us in this journey of documenting the extraordinary in the ordinary. Based in Vellore, available worldwide for those who value art and memory.
+              Join us in this journey of documenting the extraordinary in the ordinary. Based in Chennai | Tuticorin, available worldwide for those who value art and memory.
             </p>
             <a 
               href="/contact-us" 

@@ -107,8 +107,8 @@ const HeroShowcase = () => {
             transition={{ delay: 0.4 }}
             className="max-w-xl text-xs md:text-sm leading-relaxed drop-shadow-lg text-white/70 uppercase tracking-widest hidden md:block"
           >
-            Vellore, Tamil Nadu <br />
-            9840767566
+            Chennai | Tuticorin <br />
+            9443961216
           </motion.div>
         </div>
       </div>
