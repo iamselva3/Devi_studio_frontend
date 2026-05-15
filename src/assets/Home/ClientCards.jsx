@@ -49,7 +49,7 @@ const ClientCards = () => {
         </div>
 
 
-        <div className={`grid grid-cols-1 gap-4 md:gap-12 ${alignment.split(' ').map(cls => cls.startsWith('grid-cols-') ? `md:${cls}` : cls).join(' ')}`}>
+        <div className={`grid grid-cols-1 gap-8 md:gap-12 ${alignment}`}>
           {clients.map((client, index) => {
             // Find a featured image (prefer 'cards' category, or just use the first image)
             const featuredImage = client.images.find(img => img.category === "cards") || client.images[0];
@@ -66,7 +66,7 @@ const ClientCards = () => {
               >
                 <Link 
                     to={`/client/${client.clientName}`} 
-                    className="group block relative overflow-hidden rounded-none md:rounded-[2.5rem] aspect-[3/2] md:aspect-[4/5] bg-zinc-900 shadow-2xl transition-all duration-500 hover:-translate-y-2"
+                    className="group block relative overflow-hidden rounded-[2.5rem] aspect-[4/5] bg-zinc-900 shadow-2xl transition-all duration-500 hover:-translate-y-2"
                 >
                   <img 
                     src={featuredImage.url} 
@@ -78,7 +78,7 @@ const ClientCards = () => {
                   <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent opacity-80 group-hover:opacity-60 transition duration-700" />
                   
                   {/* Glass Content */}
-                  <div className="absolute bottom-4 md:bottom-6 left-4 md:left-6 right-4 md:right-6 p-4 md:p-6 rounded-none md:rounded-[2rem] bg-black/20 backdrop-blur-md border border-white/10 translate-y-2 group-hover:translate-y-0 transition duration-700">
+                  <div className="absolute bottom-6 left-6 right-6 p-6 rounded-[2rem] bg-black/20 backdrop-blur-md border border-white/10 translate-y-2 group-hover:translate-y-0 transition duration-700">
                     <p className="text-white/40 text-[10px] tracking-[0.3em] uppercase mb-2">View Gallery</p>
                     <h3 className="text-xl md:text-2xl font-serif font-bold text-white tracking-wide">
                       {client.clientName}
