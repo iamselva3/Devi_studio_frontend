@@ -154,6 +154,12 @@ img {
   padding: 15vh 0;
 }
 
+@media (max-width: 768px) {
+  .section-spacing {
+    padding: 8vh 0;
+  }
+}
+
 /* ── Custom Scrollbar ──────────────────────────────────────────────────── */
 ::-webkit-scrollbar {
   width: 8px;
