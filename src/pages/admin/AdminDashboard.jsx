@@ -190,19 +190,27 @@ export default function AdminDashboard() {
         loadData();
       } else if (cropTarget?.type === 'about') {
         const res = await uploadSettingsImage(fd);
-        handleUpdateAboutSection(cropTarget.index, "image", res.data.data.url);
-        showToast("Highlight image cropped and uploaded!");
+        const newAbout = [...(settingsForm.aboutSections || [])];
+        newAbout[cropTarget.index].image = res.data.data.url;
+        const newSettings = { ...settingsForm, aboutSections: newAbout };
+        setSettingsForm(newSettings);
+        await updateSettings(newSettings);
+        showToast("Highlight image cropped and saved!");
       } else if (cropTarget?.type === 'logo') {
         const res = await uploadSettingsImage(fd);
-        setSettingsForm({ ...settingsForm, logoImage: res.data.data.url });
-        showToast("Logo image cropped and uploaded!");
+        const newSettings = { ...settingsForm, logoImage: res.data.data.url };
+        setSettingsForm(newSettings);
+        await updateSettings(newSettings);
+        showToast("Logo image cropped and saved!");
       } else if (cropTarget?.type === 'banner') {
         const res = await uploadSettingsImage(fd);
-        setSettingsForm({
+        const newSettings = {
           ...settingsForm,
           categoryBanners: { ...settingsForm.categoryBanners, [cropTarget.category]: res.data.data.url }
-        });
-        showToast(`${cropTarget.category} banner cropped and uploaded!`);
+        };
+        setSettingsForm(newSettings);
+        await updateSettings(newSettings);
+        showToast(`${cropTarget.category} banner cropped and saved!`);
       }
       setCropModalOpen(false);
     } catch (err) {
