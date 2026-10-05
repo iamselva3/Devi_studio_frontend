@@ -6,6 +6,7 @@ export const uploadHeroImage = (formData) =>
   api.post("/settings/hero", formData, { headers: { "Content-Type": "multipart/form-data" } });
 export const uploadSettingsImage = (formData) =>
   api.post("/settings/upload", formData, { headers: { "Content-Type": "multipart/form-data" } });
+export const deleteSettingsImage = (key) => api.delete("/settings/image", { data: { key } });
 export const deleteHeroImage = (imageId) => api.delete(`/settings/hero/${imageId}`);
 
 export const getTestimonials = () => api.get("/testimonials");

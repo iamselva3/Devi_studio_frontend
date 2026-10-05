@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 import { getAllClients, getStorageSummary, uploadImages, deleteClient, deleteImage, renameClient } from "../../api/clientApi";
-import { getSettings, updateSettings, uploadHeroImage, deleteHeroImage, getTestimonials, createTestimonial, deleteTestimonial, uploadSettingsImage } from "../../api/studioApi";
+import { getSettings, updateSettings, uploadHeroImage, deleteHeroImage, getTestimonials, createTestimonial, deleteTestimonial, uploadSettingsImage, deleteSettingsImage } from "../../api/studioApi";
 import getCroppedImg from "../../utils/cropImage";
 import Cropper from "react-easy-crop";
 import { Swiper, SwiperSlide } from 'swiper/react';
@@ -306,7 +306,10 @@ export default function AdminDashboard() {
 
   const handleRemoveShowcaseImage = async (index) => {
     const newImages = [...settingsForm.showcaseImages];
-    newImages.splice(index, 1);
+    const removed = newImages.splice(index, 1)[0];
+    if (removed && removed.key) {
+      try { await deleteSettingsImage(removed.key); } catch (e) { console.error(e); }
+    }
     const newSettings = { ...settingsForm, showcaseImages: newImages };
     setSettingsForm(newSettings);
     await updateSettings(newSettings);
@@ -336,7 +339,10 @@ export default function AdminDashboard() {
 
   const handleRemoveStandaloneImage = async (index) => {
     const newImages = [...settingsForm.standaloneGallery];
-    newImages.splice(index, 1);
+    const removed = newImages.splice(index, 1)[0];
+    if (removed && removed.key) {
+      try { await deleteSettingsImage(removed.key); } catch (e) { console.error(e); }
+    }
     const newSettings = { ...settingsForm, standaloneGallery: newImages };
     setSettingsForm(newSettings);
     await updateSettings(newSettings);
