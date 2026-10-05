@@ -49,7 +49,7 @@ export default function Navbar() {
       <nav className={`navbar ${scrolled ? "navbar--scrolled" : ""} ${menuOpen ? "navbar--menu-open" : ""}`}>
         <div className="navbar__inner">
           {/* Logo */}
-          <Link to="/" className="navbar__logo" onClick={() => setMenuOpen(false)} style={{ display: 'flex', alignItems: 'center', gap: '0.8rem', textDecoration: 'none' }}>
+          <Link to="/" className="navbar__logo" onClick={() => setMenuOpen(false)} style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: '0.8rem', textDecoration: 'none' }}>
             {settings?.logoImage ? (
               <>
                 <img 
