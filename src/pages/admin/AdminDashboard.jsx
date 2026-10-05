@@ -184,6 +184,8 @@ export default function AdminDashboard() {
       const file = new File([croppedBlob], `cropped_${Date.now()}.jpg`, { type: "image/jpeg" });
       fd.append("image", file);
       
+      const extractKey = (url) => url ? url.split('.r2.dev/')[1] : null;
+
       if (cropTarget?.type === 'hero') {
         await uploadHeroImage(fd);
         showToast("Hero image cropped and published!");
@@ -191,6 +193,11 @@ export default function AdminDashboard() {
       } else if (cropTarget?.type === 'about') {
         const res = await uploadSettingsImage(fd);
         const newAbout = [...(settingsForm.aboutSections || [])];
+        const oldUrl = newAbout[cropTarget.index].image;
+        if (oldUrl) {
+          const oldKey = extractKey(oldUrl);
+          if (oldKey) try { await deleteSettingsImage(oldKey); } catch (e) { console.error(e); }
+        }
         newAbout[cropTarget.index].image = res.data.data.url;
         const newSettings = { ...settingsForm, aboutSections: newAbout };
         setSettingsForm(newSettings);
@@ -198,12 +205,22 @@ export default function AdminDashboard() {
         showToast("Highlight image cropped and saved!");
       } else if (cropTarget?.type === 'logo') {
         const res = await uploadSettingsImage(fd);
+        const oldUrl = settingsForm.logoImage;
+        if (oldUrl) {
+          const oldKey = extractKey(oldUrl);
+          if (oldKey) try { await deleteSettingsImage(oldKey); } catch (e) { console.error(e); }
+        }
         const newSettings = { ...settingsForm, logoImage: res.data.data.url };
         setSettingsForm(newSettings);
         await updateSettings(newSettings);
         showToast("Logo image cropped and saved!");
       } else if (cropTarget?.type === 'banner') {
         const res = await uploadSettingsImage(fd);
+        const oldUrl = settingsForm.categoryBanners?.[cropTarget.category];
+        if (oldUrl) {
+          const oldKey = extractKey(oldUrl);
+          if (oldKey) try { await deleteSettingsImage(oldKey); } catch (e) { console.error(e); }
+        }
         const newSettings = {
           ...settingsForm,
           categoryBanners: { ...settingsForm.categoryBanners, [cropTarget.category]: res.data.data.url }
@@ -248,7 +265,13 @@ export default function AdminDashboard() {
 
   const handleRemoveAboutSection = async (index) => {
     const newSections = [...settingsForm.aboutSections];
-    newSections.splice(index, 1);
+    const removed = newSections.splice(index, 1)[0];
+    
+    if (removed && removed.image) {
+      const oldKey = removed.image.split('.r2.dev/')[1];
+      if (oldKey) try { await deleteSettingsImage(oldKey); } catch (e) {}
+    }
+
     const newSettings = { ...settingsForm, aboutSections: newSections };
     setSettingsForm(newSettings);
     await updateSettings(newSettings);
@@ -281,6 +304,17 @@ export default function AdminDashboard() {
     } catch {
       showToast("Failed to upload logo", "error");
     }
+  };
+
+  const handleRemoveLogo = async () => {
+    if (settingsForm.logoImage) {
+      const oldKey = settingsForm.logoImage.split('.r2.dev/')[1];
+      if (oldKey) try { await deleteSettingsImage(oldKey); } catch (e) {}
+    }
+    const newSettings = { ...settingsForm, logoImage: "" };
+    setSettingsForm(newSettings);
+    await updateSettings(newSettings);
+    showToast("Logo removed and saved!");
   };
 
   const handleUploadShowcase = async (e) => {
@@ -1155,7 +1189,7 @@ export default function AdminDashboard() {
                         {settingsForm.logoImage ? (
                           <div style={{ position: "relative", width: "fit-content", background: "rgba(255,255,255,0.05)", padding: "1rem", borderRadius: "8px", marginBottom: "0.5rem" }}>
                             <img src={settingsForm.logoImage} alt="Logo Preview" style={{ maxHeight: "60px", objectFit: "contain" }} />
-                            <button type="button" onClick={() => setSettingsForm({ ...settingsForm, logoImage: "" })} className="btn-danger" style={{ position: "absolute", top: -8, right: -8, borderRadius: "50%", padding: "4px 8px", fontSize: "12px" }}>✕</button>
+                            <button type="button" onClick={handleRemoveLogo} className="btn-danger" style={{ position: "absolute", top: -8, right: -8, borderRadius: "50%", padding: "4px 8px", fontSize: "12px" }}>✕</button>
                           </div>
                         ) : (
                           <div style={{ padding: "1rem", background: "rgba(255,255,255,0.05)", borderRadius: "8px", marginBottom: "0.5rem", fontSize: "0.85rem", color: "var(--muted)" }}>
