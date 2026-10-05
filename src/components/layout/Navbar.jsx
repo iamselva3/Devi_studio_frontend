@@ -49,14 +49,31 @@ export default function Navbar() {
       <nav className={`navbar ${scrolled ? "navbar--scrolled" : ""} ${menuOpen ? "navbar--menu-open" : ""}`}>
         <div className="navbar__inner">
           {/* Logo */}
-          <Link to="/" className="navbar__logo" onClick={() => setMenuOpen(false)}>
+          <Link to="/" className="navbar__logo" onClick={() => setMenuOpen(false)} style={{ display: 'flex', alignItems: 'center', gap: '0.8rem', textDecoration: 'none' }}>
             {settings?.logoImage ? (
-              <img src={settings.logoImage} alt={settings?.studioName || "Studio Logo"} className="navbar__logo-img" style={{ maxHeight: "45px", objectFit: "contain" }} />
-            ) : (
               <>
+                <img 
+                  src={settings.logoImage} 
+                  alt={settings?.studioName || "Studio Logo"} 
+                  className="navbar__logo-img" 
+                  style={{ 
+                    height: "45px", 
+                    width: settings?.logoShape === "round" ? "45px" : "auto", 
+                    borderRadius: settings?.logoShape === "round" ? "50%" : "0", 
+                    objectFit: settings?.logoShape === "round" ? "cover" : "contain" 
+                  }} 
+                />
+                {settings?.logoDisplay === "logo-and-text" && (
+                  <div style={{ display: 'flex', flexDirection: 'column' }}>
+                    <span className="navbar__logo-name" style={{ fontSize: '1.2rem', lineHeight: 1.2 }}>{settings?.studioName || "Devi Studio"}</span>
+                  </div>
+                )}
+              </>
+            ) : (
+              <div style={{ display: 'flex', flexDirection: 'column' }}>
                 <span className="navbar__logo-name">{settings?.studioName || "Devi Studio"}</span>
                 <span className="navbar__logo-sub">Photography</span>
-              </>
+              </div>
             )}
           </Link>
 

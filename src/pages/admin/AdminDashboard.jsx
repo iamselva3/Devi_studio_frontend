@@ -1196,10 +1196,29 @@ export default function AdminDashboard() {
                             No custom logo set. Default text will be used.
                           </div>
                         )}
-                        <label className="btn-outline" style={{ display: "inline-block", cursor: "pointer", padding: "0.4rem 1rem", fontSize: "0.85rem" }}>
+                        <label className="btn-outline" style={{ display: "inline-block", cursor: "pointer", padding: "0.4rem 1rem", fontSize: "0.85rem", marginBottom: "1rem" }}>
                           Upload Logo
                           <input type="file" accept="image/*" style={{ display: "none" }} onChange={(e) => handleCropFileChange(e, { type: 'logo' })} />
                         </label>
+                        
+                        {settingsForm.logoImage && (
+                          <div style={{ display: "flex", gap: "1rem", marginTop: "0.5rem" }}>
+                            <div style={{ flex: 1 }}>
+                              <label className="input-label" style={{ fontSize: "0.75rem" }}>Logo Shape</label>
+                              <select className="input" style={{ padding: "0.4rem" }} value={settingsForm.logoShape || "rectangle"} onChange={e => setSettingsForm({ ...settingsForm, logoShape: e.target.value })}>
+                                <option value="rectangle">Rectangle (Original)</option>
+                                <option value="round">Round (Circle)</option>
+                              </select>
+                            </div>
+                            <div style={{ flex: 1 }}>
+                              <label className="input-label" style={{ fontSize: "0.75rem" }}>Logo Display</label>
+                              <select className="input" style={{ padding: "0.4rem" }} value={settingsForm.logoDisplay || "logo-only"} onChange={e => setSettingsForm({ ...settingsForm, logoDisplay: e.target.value })}>
+                                <option value="logo-only">Logo Only</option>
+                                <option value="logo-and-text">Logo + Text</option>
+                              </select>
+                            </div>
+                          </div>
+                        )}
                       </div>
                     </div>
                     <div style={{ marginTop: "1.5rem" }}>
