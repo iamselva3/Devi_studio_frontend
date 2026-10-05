@@ -246,10 +246,13 @@ export default function AdminDashboard() {
     setSettingsForm({ ...settingsForm, aboutSections: newSections });
   };
 
-  const handleRemoveAboutSection = (index) => {
+  const handleRemoveAboutSection = async (index) => {
     const newSections = [...settingsForm.aboutSections];
     newSections.splice(index, 1);
-    setSettingsForm({ ...settingsForm, aboutSections: newSections });
+    const newSettings = { ...settingsForm, aboutSections: newSections };
+    setSettingsForm(newSettings);
+    await updateSettings(newSettings);
+    showToast("Highlight removed and saved!");
   };
 
   const handleUploadAboutImage = async (index, e) => {
@@ -299,10 +302,13 @@ export default function AdminDashboard() {
     }
   };
 
-  const handleRemoveShowcaseImage = (index) => {
+  const handleRemoveShowcaseImage = async (index) => {
     const newImages = [...settingsForm.showcaseImages];
     newImages.splice(index, 1);
-    setSettingsForm({ ...settingsForm, showcaseImages: newImages });
+    const newSettings = { ...settingsForm, showcaseImages: newImages };
+    setSettingsForm(newSettings);
+    await updateSettings(newSettings);
+    showToast("Showcase image removed and saved!");
   };
 
   const handleUploadStandaloneGallery = async (category, e) => {
@@ -324,10 +330,13 @@ export default function AdminDashboard() {
     }
   };
 
-  const handleRemoveStandaloneImage = (index) => {
+  const handleRemoveStandaloneImage = async (index) => {
     const newImages = [...settingsForm.standaloneGallery];
     newImages.splice(index, 1);
-    setSettingsForm({ ...settingsForm, standaloneGallery: newImages });
+    const newSettings = { ...settingsForm, standaloneGallery: newImages };
+    setSettingsForm(newSettings);
+    await updateSettings(newSettings);
+    showToast("Gallery image removed and saved!");
   };
 
   const handleUploadCategoryBanner = async (category, e) => {
@@ -360,10 +369,13 @@ export default function AdminDashboard() {
     setSettingsForm({ ...settingsForm, pricingPlans: plans });
   };
 
-  const handleRemovePricingPlan = (index) => {
+  const handleRemovePricingPlan = async (index) => {
     const plans = [...(settingsForm.pricingPlans || [])];
     plans.splice(index, 1);
-    setSettingsForm({ ...settingsForm, pricingPlans: plans });
+    const newSettings = { ...settingsForm, pricingPlans: plans };
+    setSettingsForm(newSettings);
+    await updateSettings(newSettings);
+    showToast("Pricing plan removed and saved!");
   };
 
   const handleAddPricingFeature = (planIndex) => {
@@ -378,10 +390,12 @@ export default function AdminDashboard() {
     setSettingsForm({ ...settingsForm, pricingPlans: plans });
   };
 
-  const handleRemovePricingFeature = (planIndex, featureIndex) => {
+  const handleRemovePricingFeature = async (planIndex, featureIndex) => {
     const plans = [...(settingsForm.pricingPlans || [])];
     plans[planIndex].features.splice(featureIndex, 1);
-    setSettingsForm({ ...settingsForm, pricingPlans: plans });
+    const newSettings = { ...settingsForm, pricingPlans: plans };
+    setSettingsForm(newSettings);
+    await updateSettings(newSettings);
   };
 
   const handleAddTestimonial = async (e) => {
