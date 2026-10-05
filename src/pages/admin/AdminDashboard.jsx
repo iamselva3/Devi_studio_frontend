@@ -295,8 +295,10 @@ export default function AdminDashboard() {
         const res = await uploadSettingsImage(fd);
         newImages.push({ url: res.data.data.url, key: res.data.data.key });
       }
-      setSettingsForm({ ...settingsForm, showcaseImages: newImages });
-      showToast("Showcase images uploaded!");
+        const newSettings = { ...settingsForm, showcaseImages: newImages };
+        setSettingsForm(newSettings);
+        await updateSettings(newSettings);
+        showToast("Showcase images uploaded and saved!");
     } catch {
       showToast("Failed to upload showcase images", "error");
     }
@@ -323,8 +325,10 @@ export default function AdminDashboard() {
         const res = await uploadSettingsImage(fd);
         newImages.push({ url: res.data.data.url, key: res.data.data.key, category });
       }
-      setSettingsForm({ ...settingsForm, standaloneGallery: newImages });
-      showToast("Gallery images uploaded!");
+      const newSettings = { ...settingsForm, standaloneGallery: newImages };
+      setSettingsForm(newSettings);
+      await updateSettings(newSettings);
+      showToast("Gallery images uploaded and saved!");
     } catch {
       showToast("Failed to upload gallery images", "error");
     }
