@@ -673,56 +673,7 @@ export default function AdminDashboard() {
                   </div>
                 </div>
 
-                {/* Crop Modal */}
-                {cropModalOpen && (
-                  <div style={{
-                    position: "fixed", inset: 0, zIndex: 1000, 
-                    background: "rgba(0,0,0,0.9)", display: "flex", 
-                    flexDirection: "column", padding: "2rem"
-                  }}>
-                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "1rem" }}>
-                      <h2 className="title-section" style={{ fontSize: "1.5rem" }}>Adjust Hero Image</h2>
-                      <button className="btn-ghost" onClick={() => setCropModalOpen(false)}>✕ Close</button>
-                    </div>
-                    <p style={{ color: "var(--text-secondary)", marginBottom: "1rem" }}>
-                      Drag to reposition. The highlighted area is exactly what will appear on the homepage (16:9 ratio).
-                    </p>
-                    
-                    <div style={{ position: "relative", flex: 1, background: "#121214", borderRadius: "12px", overflow: "hidden" }}>
-                      <Cropper
-                        image={cropImageSrc}
-                        crop={crop}
-                        zoom={zoom}
-                        aspect={cropTarget?.aspect}
-                        onCropChange={setCrop}
-                        onCropComplete={(pct, px) => setCroppedAreaPixels(px)}
-                        onZoomChange={setZoom}
-                      />
-                    </div>
-                    
-                    <div style={{ marginTop: "2rem", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                      <div style={{ display: "flex", alignItems: "center", gap: "1rem", flex: 1, maxWidth: "300px" }}>
-                        <label>Zoom</label>
-                        <input
-                          type="range"
-                          value={zoom}
-                          min={1}
-                          max={3}
-                          step={0.1}
-                          onChange={(e) => setZoom(e.target.value)}
-                          style={{ flex: 1 }}
-                        />
-                      </div>
-                      <button 
-                        className="btn-gold" 
-                        onClick={handleUploadCroppedImage}
-                        disabled={heroUploading}
-                      >
-                        {heroUploading ? "Publishing..." : "Publish Cropped Image"}
-                      </button>
-                    </div>
-                  </div>
-                )}
+
               </div>
             )}
 
@@ -1259,6 +1210,56 @@ export default function AdminDashboard() {
               </div>
             )}
           </>
+        )}
+        {/* Global Crop Modal */}
+        {cropModalOpen && (
+          <div style={{
+            position: "fixed", inset: 0, zIndex: 1000, 
+            background: "rgba(0,0,0,0.9)", display: "flex", 
+            flexDirection: "column", padding: "2rem"
+          }}>
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "1rem" }}>
+              <h2 className="title-section" style={{ fontSize: "1.5rem" }}>Adjust Image</h2>
+              <button className="btn-ghost" onClick={() => setCropModalOpen(false)}>✕ Close</button>
+            </div>
+            <p style={{ color: "var(--text-secondary)", marginBottom: "1rem" }}>
+              Drag to reposition. The highlighted area is exactly what will appear on the site.
+            </p>
+            
+            <div style={{ position: "relative", flex: 1, background: "#121214", borderRadius: "12px", overflow: "hidden" }}>
+              <Cropper
+                image={cropImageSrc}
+                crop={crop}
+                zoom={zoom}
+                aspect={cropTarget?.aspect}
+                onCropChange={setCrop}
+                onCropComplete={(pct, px) => setCroppedAreaPixels(px)}
+                onZoomChange={setZoom}
+              />
+            </div>
+            
+            <div style={{ marginTop: "2rem", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+              <div style={{ display: "flex", alignItems: "center", gap: "1rem", flex: 1, maxWidth: "300px" }}>
+                <label>Zoom</label>
+                <input
+                  type="range"
+                  value={zoom}
+                  min={1}
+                  max={3}
+                  step={0.1}
+                  onChange={(e) => setZoom(e.target.value)}
+                  style={{ flex: 1 }}
+                />
+              </div>
+              <button 
+                className="btn-gold" 
+                onClick={handleUploadCroppedImage}
+                disabled={heroUploading}
+              >
+                {heroUploading ? "Publishing..." : "Publish Cropped Image"}
+              </button>
+            </div>
+          </div>
         )}
       </main>
     </div>

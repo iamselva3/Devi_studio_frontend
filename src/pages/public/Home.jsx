@@ -231,23 +231,24 @@ export default function Home() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: (idx % 3) * 0.1, duration: 0.6 }}
-                style={{ background: "rgba(255,255,255,0.03)", borderRadius: "12px", overflow: "hidden", border: "1px solid rgba(255,255,255,0.05)" }}
               >
-                <div style={{ width: "100%", paddingBottom: "75%", position: "relative", overflow: "hidden" }}>
-                  <img
-                    src={client.images?.[0]?.url || "https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&q=80"}
-                    alt={client.clientName}
-                    style={{ position: "absolute", top: 0, left: 0, width: "100%", height: "100%", objectFit: "cover", transition: "transform 0.5s ease" }}
-                    onMouseOver={e => e.currentTarget.style.transform = "scale(1.05)"}
-                    onMouseOut={e => e.currentTarget.style.transform = "scale(1)"}
-                  />
-                </div>
-                <div style={{ padding: "1.5rem", textAlign: "center" }}>
-                  <h3 style={{ fontFamily: "var(--font-heading)", fontSize: "1.2rem", letterSpacing: "1px", color: "var(--text-primary)" }}>{client.clientName}</h3>
-                  <p style={{ color: "var(--accent)", fontSize: "0.85rem", marginTop: "0.5rem", textTransform: "uppercase", letterSpacing: "2px" }}>
-                    {client.images?.[0]?.category || "Gallery"} ({client.images?.length || 0} Photos)
-                  </p>
-                </div>
+                <Link to={`/client/${encodeURIComponent(client.clientName)}`} style={{ display: 'block', background: "rgba(255,255,255,0.03)", borderRadius: "12px", overflow: "hidden", border: "1px solid rgba(255,255,255,0.05)", textDecoration: 'none', height: '100%' }}>
+                  <div style={{ width: "100%", paddingBottom: "75%", position: "relative", overflow: "hidden" }}>
+                    <img
+                      src={client.images?.[0]?.url || "https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&q=80"}
+                      alt={client.clientName}
+                      style={{ position: "absolute", top: 0, left: 0, width: "100%", height: "100%", objectFit: "cover", transition: "transform 0.5s ease" }}
+                      onMouseOver={e => e.currentTarget.style.transform = "scale(1.05)"}
+                      onMouseOut={e => e.currentTarget.style.transform = "scale(1)"}
+                    />
+                  </div>
+                  <div style={{ padding: "1.5rem", textAlign: "center" }}>
+                    <h3 style={{ fontFamily: "var(--font-heading)", fontSize: "1.2rem", letterSpacing: "1px", color: "var(--text-primary)" }}>{client.clientName}</h3>
+                    <p style={{ color: "var(--accent)", fontSize: "0.85rem", marginTop: "0.5rem", textTransform: "uppercase", letterSpacing: "2px" }}>
+                      {client.images?.[0]?.category || "Gallery"} ({client.images?.length || 0} Photos)
+                    </p>
+                  </div>
+                </Link>
               </motion.div>
             ))}
           </div>
