@@ -51,6 +51,7 @@ export default function AdminDashboard() {
   const [heroUploading, setHeroUploading] = useState(false);
   const [cropModalOpen, setCropModalOpen] = useState(false);
   const [cropImageSrc, setCropImageSrc] = useState(null);
+  const [cropTarget, setCropTarget] = useState(null);
   const [crop, setCrop] = useState({ x: 0, y: 0 });
   const [zoom, setZoom] = useState(1);
   const [croppedAreaPixels, setCroppedAreaPixels] = useState(null);
@@ -160,31 +161,50 @@ export default function AdminDashboard() {
     } catch { showToast("Failed to save settings", "error"); }
   };
 
-  const handleHeroFileChange = (e) => {
+  const handleCropFileChange = (e, targetConfig) => {
     const file = e.target.files[0];
     if (!file) return;
     const reader = new FileReader();
     reader.onload = () => {
       setCropImageSrc(reader.result);
+      setCropTarget(targetConfig);
+      setCrop({ x: 0, y: 0 });
+      setZoom(1);
       setCropModalOpen(true);
     };
     reader.readAsDataURL(file);
     e.target.value = ""; // Reset input
   };
 
-  const handleUploadCroppedHero = async () => {
+  const handleUploadCroppedImage = async () => {
     try {
       setHeroUploading(true);
       const croppedBlob = await getCroppedImg(cropImageSrc, croppedAreaPixels);
       const fd = new FormData();
-      // Generate a unique filename
-      const file = new File([croppedBlob], `hero_${Date.now()}.jpg`, { type: "image/jpeg" });
+      const file = new File([croppedBlob], `cropped_${Date.now()}.jpg`, { type: "image/jpeg" });
       fd.append("image", file);
       
-      await uploadHeroImage(fd);
-      showToast("Hero image cropped and published!");
+      if (cropTarget?.type === 'hero') {
+        await uploadHeroImage(fd);
+        showToast("Hero image cropped and published!");
+        loadData();
+      } else if (cropTarget?.type === 'about') {
+        const res = await uploadSettingsImage(fd);
+        handleUpdateAboutSection(cropTarget.index, "image", res.data.data.url);
+        showToast("Highlight image cropped and uploaded!");
+      } else if (cropTarget?.type === 'logo') {
+        const res = await uploadSettingsImage(fd);
+        setSettingsForm({ ...settingsForm, logoImage: res.data.data.url });
+        showToast("Logo image cropped and uploaded!");
+      } else if (cropTarget?.type === 'banner') {
+        const res = await uploadSettingsImage(fd);
+        setSettingsForm({
+          ...settingsForm,
+          categoryBanners: { ...settingsForm.categoryBanners, [cropTarget.category]: res.data.data.url }
+        });
+        showToast(`${cropTarget.category} banner cropped and uploaded!`);
+      }
       setCropModalOpen(false);
-      loadData();
     } catch (err) {
       showToast("Failed to crop/upload image", "error");
     } finally {
@@ -622,7 +642,7 @@ export default function AdminDashboard() {
                       type="file"
                       accept="image/*"
                       style={{ display: "none" }}
-                      onChange={handleHeroFileChange}
+                      onChange={(e) => handleCropFileChange(e, { type: 'hero', aspect: 16/9 })}
                     />
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" width="40" height="40">
                       <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M17 8l-5-5-5 5M12 3v12"/>
@@ -651,7 +671,7 @@ export default function AdminDashboard() {
                         image={cropImageSrc}
                         crop={crop}
                         zoom={zoom}
-                        aspect={16 / 9}
+                        aspect={cropTarget?.aspect}
                         onCropChange={setCrop}
                         onCropComplete={(pct, px) => setCroppedAreaPixels(px)}
                         onZoomChange={setZoom}
@@ -673,7 +693,7 @@ export default function AdminDashboard() {
                       </div>
                       <button 
                         className="btn-gold" 
-                        onClick={handleUploadCroppedHero}
+                        onClick={handleUploadCroppedImage}
                         disabled={heroUploading}
                       >
                         {heroUploading ? "Publishing..." : "Publish Cropped Image"}
@@ -739,7 +759,7 @@ export default function AdminDashboard() {
                           )}
                           <label className="btn-outline" style={{ display: "block", textAlign: "center", cursor: "pointer", fontSize: "0.8rem", padding: "0.4rem" }}>
                             Upload Image
-                            <input type="file" accept="image/*" style={{ display: "none" }} onChange={(e) => handleUploadAboutImage(i, e)} />
+                            <input type="file" accept="image/*" style={{ display: "none" }} onChange={(e) => handleCropFileChange(e, { type: 'about', index: i, aspect: 16/9 })} />
                           </label>
                         </div>
                       </div>
@@ -1161,7 +1181,7 @@ export default function AdminDashboard() {
                         )}
                         <label className="btn-outline" style={{ display: "inline-block", cursor: "pointer", padding: "0.4rem 1rem", fontSize: "0.85rem" }}>
                           Upload Logo
-                          <input type="file" accept="image/*" style={{ display: "none" }} onChange={handleUploadLogo} />
+                          <input type="file" accept="image/*" style={{ display: "none" }} onChange={(e) => handleCropFileChange(e, { type: 'logo' })} />
                         </label>
                       </div>
                     </div>
