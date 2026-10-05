@@ -1,7 +1,7 @@
 .model-page {
-  background-color: #050505; /* Deep black for fashion */
+  background-color: var(--bg-primary);
   min-height: 100vh;
-  color: #fff;
+  color: var(--text-primary);
   font-family: "Inter", sans-serif;
 }
 
@@ -13,7 +13,7 @@
   align-items: center;
   justify-content: center;
   overflow: hidden;
-  background: #111;
+  background: var(--bg-secondary);
 }
 .model-hero-bg {
   position: absolute;
@@ -27,7 +27,7 @@
 .model-hero-overlay {
   position: absolute;
   inset: 0;
-  background: linear-gradient(180deg, rgba(0,0,0,0.2) 0%, rgba(5,5,5,1) 100%);
+  background: linear-gradient(180deg, transparent 0%, var(--bg-primary) 100%);
 }
 .model-hero-content {
   position: relative;
@@ -41,7 +41,7 @@
   font-size: 0.85rem;
   letter-spacing: 12px;
   margin-bottom: 2rem;
-  color: #aaa;
+  color: var(--text-secondary);
   text-transform: uppercase;
 }
 .model-title {
@@ -51,11 +51,11 @@
   line-height: 1.1;
   margin-bottom: 1.5rem;
   text-transform: uppercase;
-  color: #fff;
+  color: var(--text-primary);
 }
 .model-desc {
   font-size: 1.2rem;
-  color: #bbb;
+  color: var(--text-secondary);
   max-width: 500px;
   margin: 0 auto;
   font-weight: 300;
@@ -75,7 +75,7 @@
 .scroll-line {
   width: 1px;
   height: 60px;
-  background: linear-gradient(to bottom, #fff 50%, transparent 50%);
+  background: linear-gradient(to bottom, var(--text-primary) 50%, transparent 50%);
   background-size: 100% 200%;
   animation: scrollDown 2s infinite ease-in-out;
 }
@@ -87,7 +87,7 @@
 /* Cinematic Grid */
 .model-section {
   padding: 0; /* Full bleed */
-  background: #050505;
+  background: var(--bg-primary);
 }
 .model-grid {
   display: grid;
@@ -100,7 +100,7 @@
   position: relative;
   overflow: hidden;
   cursor: pointer;
-  background: #111;
+  background: var(--bg-secondary);
   height: 100%;
 }
 
@@ -137,11 +137,12 @@
   opacity: 1;
 }
 .model-item-hover span {
-  border: 1px solid #fff;
+  border: 1px solid var(--text-primary);
   padding: 0.8rem 2rem;
   font-size: 0.75rem;
   letter-spacing: 3px;
   background: rgba(0,0,0,0.3);
+  color: #fff;
   backdrop-filter: blur(4px);
 }
 
@@ -149,7 +150,7 @@
 .model-empty {
   text-align: center;
   padding: 10rem 2rem;
-  color: #555;
+  color: var(--text-secondary);
 }
 .model-empty h2 {
   font-size: 3rem;

@@ -1,7 +1,7 @@
 .baby-page {
-  background-color: #faf7f5; /* Soft, warm pastel background */
+  background-color: var(--bg-primary);
   min-height: 100vh;
-  color: #5d4037;
+  color: var(--text-primary);
 }
 
 /* Hero Section */
@@ -13,20 +13,20 @@
   justify-content: center;
   text-align: center;
   overflow: hidden;
-  background: #fdf5f3;
+  background: var(--bg-secondary);
   padding-top: 80px;
 }
 .baby-hero-bg {
   position: absolute;
   top: 0; left: 0; width: 100%; height: 100%;
   object-fit: cover;
-  opacity: 0.4;
+  opacity: 0.2;
   filter: sepia(0.3) blur(2px);
 }
 .baby-hero-overlay {
   position: absolute;
   inset: 0;
-  background: radial-gradient(circle, rgba(253,245,243,0.2) 0%, rgba(253,245,243,0.9) 100%);
+  background: linear-gradient(to bottom, transparent 0%, var(--bg-primary) 100%);
 }
 .baby-hero-content {
   position: relative;
@@ -49,13 +49,12 @@
   font-family: "Quicksand", "Playfair Display", serif;
   font-size: 3.5rem;
   font-weight: 700;
-  color: #4e342e;
+  color: var(--text-primary);
   margin-bottom: 1rem;
-  text-shadow: 2px 2px 4px rgba(255,255,255,0.8);
 }
 .baby-desc {
   font-size: 1.1rem;
-  color: #795548;
+  color: var(--text-secondary);
   line-height: 1.6;
 }
 
@@ -74,10 +73,10 @@
 .baby-card {
   width: calc(33.333% - 2.5rem);
   min-width: 280px;
-  background: #fff;
+  background: var(--bg-secondary);
   padding: 12px 12px 60px 12px;
   border-radius: 4px;
-  box-shadow: 0 10px 25px rgba(121, 85, 72, 0.15);
+  box-shadow: 0 10px 25px rgba(0,0,0, 0.15);
   cursor: pointer;
   position: relative;
   transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
