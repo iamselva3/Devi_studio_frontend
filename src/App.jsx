@@ -1,4 +1,5 @@
 import { BrowserRouter as Router, Routes, Route, useLocation } from "react-router-dom";
+import { useEffect } from "react";
 import { AuthProvider, SuperAuthProvider } from "./context/AuthContext";
 import { SettingsProvider } from "./context/SettingsContext";
 import Navbar from "./components/layout/Navbar";
@@ -24,12 +25,23 @@ import AdminDashboard from "./pages/admin/AdminDashboard";
 // Super Admin
 import SuperAdminDashboard from "./pages/superadmin/SuperAdminDashboard";
 
+function ScrollToTop() {
+  const { pathname } = useLocation();
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]);
+
+  return null;
+}
+
 function Layout() {
   const location = useLocation();
   const isAdminPath = location.pathname.startsWith('/admin') || location.pathname.startsWith('/superadmin');
 
   return (
     <div className="app-container">
+      <ScrollToTop />
       {!isAdminPath && <Navbar />}
       
       <main className="main-content">
