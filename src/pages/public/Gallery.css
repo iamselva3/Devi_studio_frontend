@@ -62,10 +62,99 @@
   margin: 0 auto;
 }
 
-/* Gallery Grid — CSS Columns masonry */
+/* Default (used for loading skeleton) */
 .gallery-grid {
+  display: block;
+}
+
+/* Wedding — Classic CSS Columns Masonry */
+.gallery-grid--wedding {
   columns: 3;
   column-gap: 1rem;
+}
+
+/* Model — High-Fashion Cinematic Grid */
+.gallery-grid--model {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  grid-auto-flow: dense;
+  gap: 4px;
+}
+.gallery-grid--model .gallery-item {
+  margin-bottom: 0;
+  border-radius: 0; /* Sharp, modern edges */
+  height: 100%;
+}
+.gallery-grid--model .gallery-item:nth-child(5n+1) {
+  grid-column: span 2;
+  grid-row: span 2;
+}
+.gallery-grid--model .gallery-item img {
+  height: 100%;
+  aspect-ratio: 4/5;
+}
+
+/* Baby — Playful Polaroid Scatter */
+.gallery-grid--baby {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 2rem;
+  padding: 2rem 0;
+}
+.gallery-grid--baby .gallery-item {
+  width: calc(33.333% - 2rem);
+  background: #fff;
+  padding: 10px 10px 45px 10px;
+  border-radius: 2px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+  margin-bottom: 1rem;
+  transform: rotate(-3deg);
+}
+.gallery-grid--baby .gallery-item:nth-child(2n) {
+  transform: rotate(4deg);
+}
+.gallery-grid--baby .gallery-item:nth-child(3n) {
+  transform: rotate(-1deg) translateY(15px);
+}
+.gallery-grid--baby .gallery-item:hover {
+  transform: scale(1.08) rotate(0deg);
+  z-index: 10;
+  box-shadow: 0 15px 35px rgba(0,0,0,0.6);
+}
+.gallery-grid--baby .gallery-item img {
+  border-radius: 2px;
+  aspect-ratio: 1/1;
+}
+.gallery-grid--baby .gallery-item__overlay {
+  background: rgba(255,255,255,0.3);
+  color: #333;
+}
+
+@media (max-width: 900px) {
+  .gallery-grid--baby .gallery-item {
+    width: calc(50% - 2rem);
+  }
+}
+
+@media (max-width: 600px) {
+  .gallery-grid--wedding {
+    columns: 2;
+  }
+  .gallery-grid--model {
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  }
+  .gallery-grid--baby .gallery-item {
+    width: 100%;
+    margin-bottom: 2rem;
+    transform: rotate(0) !important;
+  }
+}
+
+@media (max-width: 400px) {
+  .gallery-grid--wedding {
+    columns: 1;
+  }
 }
 
 .gallery-item {

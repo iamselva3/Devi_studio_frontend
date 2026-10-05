@@ -94,7 +94,7 @@ export default function Gallery({ title, category, bannerCategory }) {
               <p>The gallery is being curated. Check back soon!</p>
             </div>
           ) : (
-            <div className="gallery-grid">
+            <div className={`gallery-grid gallery-grid--${category}`}>
               {images.map((img, idx) => (
                 <button
                   key={img._id || idx}
