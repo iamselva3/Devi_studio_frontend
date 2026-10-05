@@ -975,7 +975,7 @@ export default function AdminDashboard() {
                               <h4 style={{ color: "var(--text-secondary)", fontSize: "0.9rem", textTransform: "uppercase" }}>Page Banner</h4>
                               <label className="btn-outline" style={{ cursor: "pointer", fontSize: "0.7rem", padding: "0.25rem 0.5rem" }}>
                                 {banner ? "Change Banner" : "Upload Banner"}
-                                <input type="file" accept="image/*" style={{ display: "none" }} onChange={(e) => handleUploadCategoryBanner(cat, e)} />
+                                <input type="file" accept="image/*" style={{ display: "none" }} onChange={(e) => handleCropFileChange(e, { type: 'banner', category: cat, aspect: 21/9 })} />
                               </label>
                             </div>
                             <div style={{ width: "100%", height: "120px", borderRadius: "8px", background: "var(--dark-2)", border: "1px dashed var(--border)", overflow: "hidden", display: "flex", alignItems: "center", justifyContent: "center" }}>
