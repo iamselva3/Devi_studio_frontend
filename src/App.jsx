@@ -7,6 +7,8 @@ import Footer from "./components/layout/Footer";
 // Public Pages
 import Home from "./pages/public/Home";
 import Gallery from "./pages/public/Gallery";
+import BabyGallery from "./pages/public/BabyGallery";
+import ModelGallery from "./pages/public/ModelGallery";
 import About from "./pages/public/About";
 import Contact from "./pages/public/Contact";
 import Pricing from "./pages/public/Pricing";
@@ -34,9 +36,9 @@ function Layout() {
         <Routes>
           {/* Public */}
           <Route path="/" element={<Home />} />
-          <Route path="/weddings" element={<Gallery category="wedding" />} />
-          <Route path="/baby-photography" element={<Gallery category="baby" />} />
-          <Route path="/model-shoot" element={<Gallery category="model" />} />
+          <Route path="/weddings" element={<Gallery category="wedding" title="Weddings" />} />
+          <Route path="/baby-photography" element={<BabyGallery />} />
+          <Route path="/model-shoot" element={<ModelGallery />} />
           <Route path="/about-us" element={<About />} />
           <Route path="/contact-us" element={<Contact />} />
           <Route path="/pricing" element={<Pricing />} />
