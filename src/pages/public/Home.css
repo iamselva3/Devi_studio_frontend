@@ -250,8 +250,8 @@
 
 @media (max-width: 768px) {
   .home-hero {
-    height: 75vh;
-    padding-top: 60px;
+    height: 80vh;
+    padding-top: 100px;
   }
   .home-hero .swiper-slide {
     width: 90%;
