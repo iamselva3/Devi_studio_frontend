@@ -44,12 +44,17 @@ export default function Navbar() {
     return () => { document.body.style.overflow = ""; };
   }, [menuOpen]);
 
+  const logoPlacement = settings?.logoPlacement || "left";
+  const flexDirection = logoPlacement === "right" ? "row-reverse" : 
+                        logoPlacement === "top" ? "column" : 
+                        logoPlacement === "bottom" ? "column-reverse" : "row";
+
   return (
     <>
       <nav className={`navbar ${scrolled ? "navbar--scrolled" : ""} ${menuOpen ? "navbar--menu-open" : ""}`}>
         <div className="navbar__inner">
           {/* Logo */}
-          <Link to="/" className="navbar__logo" onClick={() => setMenuOpen(false)} style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: '0.8rem', textDecoration: 'none' }}>
+          <Link to="/" className="navbar__logo" onClick={() => setMenuOpen(false)} style={{ display: 'flex', flexDirection: flexDirection, alignItems: 'center', gap: '0.8rem', textDecoration: 'none' }}>
             {settings?.logoImage ? (
               <>
                 <img 

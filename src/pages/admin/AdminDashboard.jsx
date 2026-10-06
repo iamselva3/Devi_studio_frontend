@@ -1202,21 +1202,90 @@ export default function AdminDashboard() {
                         </label>
                         
                         {settingsForm.logoImage && (
-                          <div style={{ display: "flex", gap: "1rem", marginTop: "0.5rem" }}>
-                            <div style={{ flex: 1 }}>
-                              <label className="input-label" style={{ fontSize: "0.75rem" }}>Logo Shape</label>
-                              <select className="input" style={{ padding: "0.4rem" }} value={settingsForm.logoShape || "rectangle"} onChange={e => setSettingsForm({ ...settingsForm, logoShape: e.target.value })}>
-                                <option value="rectangle">Rectangle (Original)</option>
-                                <option value="round">Round (Circle)</option>
-                              </select>
+                          <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem", marginTop: "0.5rem" }}>
+                            <div style={{ display: "flex", gap: "1rem" }}>
+                              <div style={{ flex: 1 }}>
+                                <label className="input-label" style={{ fontSize: "0.75rem" }}>Logo Shape</label>
+                                <select className="input" style={{ padding: "0.4rem" }} value={settingsForm.logoShape || "rectangle"} onChange={e => setSettingsForm({ ...settingsForm, logoShape: e.target.value })}>
+                                  <option value="rectangle">Rectangle (Original)</option>
+                                  <option value="round">Round (Circle)</option>
+                                </select>
+                              </div>
+                              <div style={{ flex: 1 }}>
+                                <label className="input-label" style={{ fontSize: "0.75rem" }}>Logo Display</label>
+                                <select className="input" style={{ padding: "0.4rem" }} value={settingsForm.logoDisplay || "logo-only"} onChange={e => setSettingsForm({ ...settingsForm, logoDisplay: e.target.value })}>
+                                  <option value="logo-only">Logo Only</option>
+                                  <option value="logo-and-text">Logo + Text</option>
+                                </select>
+                              </div>
                             </div>
-                            <div style={{ flex: 1 }}>
-                              <label className="input-label" style={{ fontSize: "0.75rem" }}>Logo Display</label>
-                              <select className="input" style={{ padding: "0.4rem" }} value={settingsForm.logoDisplay || "logo-only"} onChange={e => setSettingsForm({ ...settingsForm, logoDisplay: e.target.value })}>
-                                <option value="logo-only">Logo Only</option>
-                                <option value="logo-and-text">Logo + Text</option>
-                              </select>
-                            </div>
+                            
+                            {settingsForm.logoDisplay === "logo-and-text" && (
+                              <div style={{ marginTop: '1.5rem', background: 'rgba(0,0,0,0.2)', padding: '2rem', borderRadius: '8px', border: '1px dashed rgba(255,255,255,0.1)' }}>
+                                <label className="input-label" style={{ fontSize: "0.85rem", textAlign: "center", display: "block", marginBottom: "1.5rem" }}>
+                                  Interactive Preview: Drag and drop the logo to position it relative to the text
+                                </label>
+                                <div style={{ display: "flex", justifyContent: "center" }}>
+                                  <div style={{ 
+                                    display: "grid", 
+                                    gridTemplateColumns: "100px auto 100px", 
+                                    gridTemplateRows: "80px auto 80px", 
+                                    gap: "15px",
+                                    alignItems: "center",
+                                    justifyItems: "center"
+                                  }}>
+                                    {/* Top Dropzone */}
+                                    <div
+                                      onDragOver={e => e.preventDefault()}
+                                      onDrop={e => setSettingsForm({ ...settingsForm, logoPlacement: "top" })}
+                                      style={{ gridColumn: 2, gridRow: 1, width: '100%', height: '100%', border: '2px dashed rgba(255,255,255,0.1)', borderRadius: '8px', display: 'flex', alignItems: 'center', justifyContent: 'center', background: settingsForm.logoPlacement === "top" ? 'rgba(255,255,255,0.05)' : 'transparent' }}
+                                    >
+                                      {settingsForm.logoPlacement === "top" && (
+                                        <img draggable onDragStart={e => e.dataTransfer.setData('text/plain', 'logo')} src={settingsForm.logoImage} alt="Logo" style={{ height: "45px", width: settingsForm.logoShape === "round" ? "45px" : "auto", borderRadius: settingsForm.logoShape === "round" ? "50%" : "0", objectFit: settingsForm.logoShape === "round" ? "cover" : "contain", cursor: "grab" }} />
+                                      )}
+                                    </div>
+
+                                    {/* Left Dropzone */}
+                                    <div
+                                      onDragOver={e => e.preventDefault()}
+                                      onDrop={e => setSettingsForm({ ...settingsForm, logoPlacement: "left" })}
+                                      style={{ gridColumn: 1, gridRow: 2, width: '100%', height: '100%', border: '2px dashed rgba(255,255,255,0.1)', borderRadius: '8px', display: 'flex', alignItems: 'center', justifyContent: 'center', background: (settingsForm.logoPlacement === "left" || !settingsForm.logoPlacement) ? 'rgba(255,255,255,0.05)' : 'transparent' }}
+                                    >
+                                      {(settingsForm.logoPlacement === "left" || !settingsForm.logoPlacement) && (
+                                        <img draggable onDragStart={e => e.dataTransfer.setData('text/plain', 'logo')} src={settingsForm.logoImage} alt="Logo" style={{ height: "45px", width: settingsForm.logoShape === "round" ? "45px" : "auto", borderRadius: settingsForm.logoShape === "round" ? "50%" : "0", objectFit: settingsForm.logoShape === "round" ? "cover" : "contain", cursor: "grab" }} />
+                                      )}
+                                    </div>
+
+                                    {/* Center Text */}
+                                    <div style={{ gridColumn: 2, gridRow: 2, textAlign: "center", padding: "0 1rem" }}>
+                                      <div style={{ fontSize: "1.2rem", fontWeight: "bold", letterSpacing: "1px", color: "#fff", fontFamily: "var(--font-heading)" }}>{settingsForm.studioName || "DEVI STUDIO"}</div>
+                                    </div>
+
+                                    {/* Right Dropzone */}
+                                    <div
+                                      onDragOver={e => e.preventDefault()}
+                                      onDrop={e => setSettingsForm({ ...settingsForm, logoPlacement: "right" })}
+                                      style={{ gridColumn: 3, gridRow: 2, width: '100%', height: '100%', border: '2px dashed rgba(255,255,255,0.1)', borderRadius: '8px', display: 'flex', alignItems: 'center', justifyContent: 'center', background: settingsForm.logoPlacement === "right" ? 'rgba(255,255,255,0.05)' : 'transparent' }}
+                                    >
+                                      {settingsForm.logoPlacement === "right" && (
+                                        <img draggable onDragStart={e => e.dataTransfer.setData('text/plain', 'logo')} src={settingsForm.logoImage} alt="Logo" style={{ height: "45px", width: settingsForm.logoShape === "round" ? "45px" : "auto", borderRadius: settingsForm.logoShape === "round" ? "50%" : "0", objectFit: settingsForm.logoShape === "round" ? "cover" : "contain", cursor: "grab" }} />
+                                      )}
+                                    </div>
+
+                                    {/* Bottom Dropzone */}
+                                    <div
+                                      onDragOver={e => e.preventDefault()}
+                                      onDrop={e => setSettingsForm({ ...settingsForm, logoPlacement: "bottom" })}
+                                      style={{ gridColumn: 2, gridRow: 3, width: '100%', height: '100%', border: '2px dashed rgba(255,255,255,0.1)', borderRadius: '8px', display: 'flex', alignItems: 'center', justifyContent: 'center', background: settingsForm.logoPlacement === "bottom" ? 'rgba(255,255,255,0.05)' : 'transparent' }}
+                                    >
+                                      {settingsForm.logoPlacement === "bottom" && (
+                                        <img draggable onDragStart={e => e.dataTransfer.setData('text/plain', 'logo')} src={settingsForm.logoImage} alt="Logo" style={{ height: "45px", width: settingsForm.logoShape === "round" ? "45px" : "auto", borderRadius: settingsForm.logoShape === "round" ? "50%" : "0", objectFit: settingsForm.logoShape === "round" ? "cover" : "contain", cursor: "grab" }} />
+                                      )}
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            )}
                           </div>
                         )}
                       </div>

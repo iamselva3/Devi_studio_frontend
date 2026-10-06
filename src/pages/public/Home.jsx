@@ -1,17 +1,34 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import { Link } from "react-router-dom";
 import { getAllClients } from "../../api/clientApi";
 import { getTestimonials } from "../../api/studioApi";
 import { useSettings } from "../../context/SettingsContext";
-import { motion } from "framer-motion";
+import { motion, useInView } from "framer-motion";
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { EffectCoverflow, Autoplay, Pagination } from 'swiper/modules';
-import Tilt from 'react-parallax-tilt';
 
 import 'swiper/css';
 import 'swiper/css/effect-coverflow';
 import 'swiper/css/pagination';
-import "./Home.css";
+/* SketchRevealImage component — starts as true pencil sketch, fades to reveal color */
+function SketchRevealImage({ src, alt, position }) {
+  const ref = useRef(null);
+  const isInView = useInView(ref, { once: true, margin: "-100px" });
+
+  return (
+    <motion.div
+      ref={ref}
+      initial={{ opacity: 0, x: position === "left" ? -80 : 80 }}
+      whileInView={{ opacity: 1, x: 0 }}
+      viewport={{ once: true, margin: "-100px" }}
+      transition={{ duration: 1, ease: [0.25, 1, 0.5, 1] }}
+      className="about-image-wrapper"
+      style={{ order: position === "left" ? 1 : 2 }}
+    >
+      <img src={src} alt={alt} className="about-image" />
+    </motion.div>
+  );
+}
 
 const categories = [
   { key: "wedding", label: "Weddings", to: "/weddings", num: "01" },
@@ -129,9 +146,9 @@ export default function Home() {
         </motion.div>
       </section>
 
-      {/* ── Dynamic Highlights (About) Sections ─────────────────────────────────────── */}
+      {/* ── Dynamic Highlights (About) Sections — Pencil Sketch Reveal ─────── */}
       <section className="section-spacing home-about">
-        <div className="container" style={{ display: "flex", flexDirection: "column", gap: "6rem" }}>
+        <div className="container" style={{ display: "flex", flexDirection: "column", gap: "8rem" }}>
           {((settings?.aboutSections?.length > 0) ? settings.aboutSections : [{
             title: "The Art of Authenticity",
             text: `We believe that every frame should tell a story. Not just what it looked like, but what it felt like. At ${studioName}, we discard the generic to capture the raw, unscripted beauty of your most cherished moments.`,
@@ -140,14 +157,19 @@ export default function Home() {
           }]).map((sec, idx) => (
             <div className="about-grid" key={idx} style={{ alignItems: "center" }}>
 
-              {/* Text Block */}
+              {/* Text Block — slides from LEFT */}
               <motion.div
-                initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-100px" }} variants={fadeUp}
+                initial={{ opacity: 0, x: -80 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true, margin: "-100px" }}
+                transition={{ duration: 0.9, ease: [0.25, 1, 0.5, 1] }}
                 className="about-text"
                 style={{ order: sec.imagePosition === "left" ? 2 : 1 }}
               >
+                <span className="about-section-num">{String(idx + 1).padStart(2, '0')}</span>
                 <h2 className="title-section" style={{ color: "var(--gold)", fontSize: "clamp(1.8rem, 4vw, 3rem)" }}>{sec.title}</h2>
-                <p style={{ marginTop: "1.5rem", whiteSpace: "pre-line" }}>{sec.text}</p>
+                <div className="about-divider"></div>
+                <p style={{ marginTop: "1rem", whiteSpace: "pre-line" }}>{sec.text}</p>
                 {idx === 0 && (
                   <div style={{ marginTop: "2rem" }}>
                     <Link to="/about-us" className="btn-primary" style={{ padding: '0.8rem 2rem', fontSize: '0.85rem' }}>Our Story</Link>
@@ -155,98 +177,93 @@ export default function Home() {
                 )}
               </motion.div>
 
-              {/* Image Block */}
-              <Tilt tiltMaxAngleX={5} tiltMaxAngleY={5} perspective={1000} transitionSpeed={1000} scale={1.02} style={{ order: sec.imagePosition === "left" ? 1 : 2 }}>
-                <motion.div
-                  initial={{ opacity: 0, x: sec.imagePosition === "left" ? -50 : 50 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true }} transition={{ duration: 1 }}
-                  className="about-image-wrapper"
-                >
-                  <img src={sec.image || heroImages[0]?.url} alt={sec.title} className="about-image" />
-                </motion.div>
-              </Tilt>
+              {/* Image Block — slides from RIGHT with pencil sketch reveal */}
+              <SketchRevealImage 
+                src={sec.image || heroImages[0]?.url} 
+                alt={sec.title} 
+                position={sec.imagePosition === "left" ? "left" : "right"} 
+              />
 
             </div>
           ))}
         </div>
       </section>
 
-      {/* ── 3D Featured Photos Grid ──────────────────────────────────────── */}
-      <section className="home-photos">
+      {/* ── Showcase — Horizontal Filmstrip ───────────────────────────────── */}
+      <section className="home-showcase">
         <div className="container">
-          <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp}>
-            <p className="subtitle text-gold">Recent Masterpieces</p>
-            <h2 className="title-section" style={{ marginTop: '0.5rem' }}>Client Showcase</h2>
+          <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.8 }} className="showcase-header">
+            <span className="showcase-eyebrow">◈ PORTFOLIO</span>
+            <h2 className="title-section">Recent Masterpieces</h2>
+            <p className="showcase-sub">A curated selection of our finest work</p>
           </motion.div>
+        </div>
 
-          <div className="photos-grid">
-            {allPhotos.map((photo, idx) => (
+        <div className="showcase-filmstrip">
+          <div className="showcase-track">
+            {[...allPhotos, ...allPhotos].map((photo, idx) => (
               <motion.div
-                key={photo._id || idx}
-                initial={{ opacity: 0, scale: 0.9, y: 20 }}
-                whileInView={{ opacity: 1, scale: 1, y: 0 }}
-                viewport={{ once: true, margin: "-50px" }}
-                transition={{ delay: (idx % 3) * 0.1, duration: 0.6 }}
+                key={`showcase-${idx}`}
+                className="showcase-frame"
+                initial={{ opacity: 0, y: 40 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: (idx % 6) * 0.08, duration: 0.6 }}
               >
-                <Tilt
-                  tiltMaxAngleX={10}
-                  tiltMaxAngleY={10}
-                  perspective={1000}
-                  transitionSpeed={1000}
-                  scale={1.03}
-                  glareEnable={true}
-                  glareMaxOpacity={0.2}
-                  glarePosition="all"
-                >
-                  <div className="photo-card-wrapper">
-                    <img src={photo.url} alt="Client Photo" className="photo-card-img" />
-                  </div>
-                </Tilt>
+                <div className="showcase-frame-inner">
+                  <img src={photo.url} alt="Showcase" loading="lazy" />
+                  <div className="showcase-frame-shine"></div>
+                </div>
               </motion.div>
             ))}
-
-            {allPhotos.length === 0 && (
-              <div style={{ color: 'var(--text-secondary)', fontStyle: 'italic', padding: '2rem 0' }}>
-                Loading recent client photos...
-              </div>
-            )}
           </div>
         </div>
+
+        {allPhotos.length === 0 && (
+          <div className="container" style={{ textAlign: 'center', color: 'var(--text-secondary)', fontStyle: 'italic', padding: '2rem 0' }}>
+            Loading recent client photos...
+          </div>
+        )}
       </section>
 
-      {/* ── Featured Albums (Clients from Admin) ───────────────────────── */}
-      <section className="section-spacing" style={{ background: "var(--dark-bg)" }}>
+      {/* ── Our Clients — Magazine Spread ─────────────────────────────────── */}
+      <section className="section-spacing home-clients-section">
         <div className="container">
-          <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} style={{ textAlign: "center", marginBottom: "4rem" }}>
-            <p className="subtitle text-gold">Real Stories</p>
-            <h2 className="title-section" style={{ marginTop: '0.5rem' }}>Our Clients</h2>
+          <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.8 }} className="clients-header">
+            <div className="clients-header-line"></div>
+            <div className="clients-header-content">
+              <span className="clients-eyebrow">REAL STORIES</span>
+              <h2 className="title-section">Our Clients</h2>
+              <p className="clients-sub">Every love story deserves to be told beautifully</p>
+            </div>
+            <div className="clients-header-line"></div>
           </motion.div>
 
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))", gap: "2rem" }}>
+          <div className="clients-magazine-grid">
             {clientsList.slice(0, 6).map((client, idx) => (
               <motion.div
                 key={client._id || idx}
-                initial={{ opacity: 0, y: 30 }}
+                initial={{ opacity: 0, y: 50 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ delay: (idx % 3) * 0.1, duration: 0.6 }}
+                transition={{ delay: (idx % 3) * 0.15, duration: 0.7 }}
+                className={`client-magazine-card ${idx === 0 ? 'client-magazine-card--featured' : ''}`}
               >
-                <Link to={`/client/${encodeURIComponent(client.clientName)}`} style={{ display: 'block', background: "rgba(255,255,255,0.03)", borderRadius: "12px", overflow: "hidden", border: "1px solid rgba(255,255,255,0.05)", textDecoration: 'none', height: '100%' }}>
-                  <div style={{ width: "100%", paddingBottom: "75%", position: "relative", overflow: "hidden" }}>
+                <Link to={`/client/${encodeURIComponent(client.clientName)}`} className="client-magazine-link">
+                  <div className="client-magazine-img-wrap">
                     <img
                       src={client.images?.[0]?.url || "https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&q=80"}
                       alt={client.clientName}
-                      style={{ position: "absolute", top: 0, left: 0, width: "100%", height: "100%", objectFit: "cover", transition: "transform 0.5s ease" }}
-                      onMouseOver={e => e.currentTarget.style.transform = "scale(1.05)"}
-                      onMouseOut={e => e.currentTarget.style.transform = "scale(1)"}
+                      className="client-magazine-img"
                     />
+                    <div className="client-magazine-overlay">
+                      <span className="client-magazine-view">View Gallery →</span>
+                    </div>
                   </div>
-                  <div style={{ padding: "1.5rem", textAlign: "center" }}>
-                    <h3 style={{ fontFamily: "var(--font-heading)", fontSize: "1.2rem", letterSpacing: "1px", color: "var(--text-primary)" }}>{client.clientName}</h3>
-                    <p style={{ color: "var(--accent)", fontSize: "0.85rem", marginTop: "0.5rem", textTransform: "uppercase", letterSpacing: "2px" }}>
-                      {client.images?.[0]?.category || "Gallery"} ({client.images?.length || 0} Photos)
-                    </p>
+                  <div className="client-magazine-info">
+                    <span className="client-magazine-category">{client.images?.[0]?.category || "Gallery"}</span>
+                    <h3 className="client-magazine-name">{client.clientName}</h3>
+                    <span className="client-magazine-count">{client.images?.length || 0} Photos</span>
                   </div>
                 </Link>
               </motion.div>
